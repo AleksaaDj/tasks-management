@@ -22,28 +22,22 @@ class TasksRepositoryTest {
 
     @Test
     fun `repository should be created with tasks api dependency`() {
-        // Given & When
         val repository = TasksRepository(mockTasksApi)
 
-        // Then
         assertNotNull(repository)
     }
 
     @Test
     fun `repository should accept tasks api in constructor`() {
-        // Given
         val customApi = object : TasksApi {}
 
-        // When
         val repository = TasksRepository(customApi)
 
-        // Then
         assertNotNull(repository)
     }
 
     @Test
     fun `repository should be created successfully`() {
-        // Then
         assertNotNull(tasksRepository)
     }
 }

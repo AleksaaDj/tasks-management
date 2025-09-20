@@ -6,5 +6,6 @@ data class Task(
     val Priority: Int,
     val TargetDate: String,
     val Title: String,
-    val id: String
+    val id: String,
+    val isResolved: Boolean = false
 )
