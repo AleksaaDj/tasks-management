@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Tasks Management</string>
+    <string name="due_date">Due date</string>
+    <string name="days_left">Days left</string>
+    <string name="resolved">Resolved</string>
+    <string name="unresolved">Unresolved</string>
+    <string name="no_tasks_for_today">No tasks for today!</string>
+    <string name="intro_illustration">Intro illustration</string>
 </resources>

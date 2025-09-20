@@ -65,6 +65,8 @@ dependencies {
 
     // Room Database
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.ui.test.junit4)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.paging)
 

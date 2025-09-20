@@ -7,17 +7,14 @@ class TasksTest {
 
     @Test
     fun `tasks creation with empty list should work correctly`() {
-        // Given
         val tasks = Tasks(tasks = emptyList())
 
-        // Then
         assertNotNull(tasks.tasks)
         assertTrue(tasks.tasks.isEmpty())
     }
 
     @Test
     fun `tasks creation with multiple tasks should work correctly`() {
-        // Given
         val task1 = Task(
             Description = "First task",
             DueDate = "2025-09-15",
@@ -38,7 +35,6 @@ class TasksTest {
 
         val tasks = Tasks(tasks = listOf(task1, task2))
 
-        // Then
         assertEquals(2, tasks.tasks.size)
         assertEquals(task1, tasks.tasks[0])
         assertEquals(task2, tasks.tasks[1])
@@ -46,7 +42,6 @@ class TasksTest {
 
     @Test
     fun `tasks equality should work correctly`() {
-        // Given
         val task1 = Task(
             Description = "Test task",
             DueDate = "2025-09-15",
@@ -60,7 +55,6 @@ class TasksTest {
         val tasks2 = Tasks(tasks = listOf(task1))
         val tasks3 = Tasks(tasks = emptyList())
 
-        // Then
         assertEquals(tasks1, tasks2)
         assertNotEquals(tasks1, tasks3)
         assertEquals(tasks1.hashCode(), tasks2.hashCode())
@@ -68,7 +62,6 @@ class TasksTest {
 
     @Test
     fun `tasks with different order should not be equal`() {
-        // Given
         val task1 = Task(
             Description = "First task",
             DueDate = "2025-09-15",
@@ -90,7 +83,6 @@ class TasksTest {
         val tasks1 = Tasks(tasks = listOf(task1, task2))
         val tasks2 = Tasks(tasks = listOf(task2, task1))
 
-        // Then
         assertNotEquals(tasks1, tasks2)
     }
 }

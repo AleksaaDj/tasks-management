@@ -7,7 +7,6 @@ class TaskTest {
 
     @Test
     fun `task creation with all properties should work correctly`() {
-        // Given
         val task = Task(
             Description = "Find us some cool place for team building - place reservation for December 5th",
             DueDate = "2025-09-15",
@@ -17,18 +16,17 @@ class TaskTest {
             id = "a4a044856fca4362a8b72070329c9afd"
         )
 
-        // Then
         assertEquals("Find us some cool place for team building - place reservation for December 5th", task.Description)
         assertEquals("2025-09-15", task.DueDate)
         assertEquals(0, task.Priority)
         assertEquals("2025-09-15", task.TargetDate)
         assertEquals("Organize team building for mobile team", task.Title)
         assertEquals("a4a044856fca4362a8b72070329c9afd", task.id)
+        assertFalse(task.isResolved) // Default should be false
     }
 
     @Test
     fun `task equality should work correctly`() {
-        // Given
         val task1 = Task(
             Description = "Test description",
             DueDate = "2025-09-15",
@@ -56,7 +54,6 @@ class TaskTest {
             id = "same-id"
         )
 
-        // Then
         assertEquals(task1, task2)
         assertNotEquals(task1, task3)
         assertEquals(task1.hashCode(), task2.hashCode())
@@ -64,7 +61,6 @@ class TaskTest {
 
     @Test
     fun `task with different id should not be equal`() {
-        // Given
         val task1 = Task(
             Description = "Same description",
             DueDate = "2025-09-15",
@@ -83,13 +79,11 @@ class TaskTest {
             id = "id-2"
         )
 
-        // Then
         assertNotEquals(task1, task2)
     }
 
     @Test
     fun `task with priority should be identified correctly`() {
-        // Given
         val taskWithPriority = Task(
             Description = "Important task",
             DueDate = "2025-09-15",
@@ -99,7 +93,109 @@ class TaskTest {
             id = "important-1"
         )
 
-        // Then
         assertTrue(taskWithPriority.Priority >= 0)
+    }
+
+    @Test
+    fun `task defaults to unresolved when isResolved not specified`() {
+        val task = Task(
+            Description = "Test task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Test Task",
+            id = "test-1"
+        )
+
+        assertFalse(task.isResolved)
+    }
+
+    @Test
+    fun `task can be created as resolved`() {
+        val resolvedTask = Task(
+            Description = "Completed task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Completed Task",
+            id = "completed-1",
+            isResolved = true
+        )
+
+        assertTrue(resolvedTask.isResolved)
+    }
+
+    @Test
+    fun `task can be created as unresolved explicitly`() {
+        val unresolvedTask = Task(
+            Description = "Pending task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Pending Task",
+            id = "pending-1",
+            isResolved = false
+        )
+
+        assertFalse(unresolvedTask.isResolved)
+    }
+
+    @Test
+    fun `task equality includes isResolved field`() {
+        val task1 = Task(
+            Description = "Same task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Same Task",
+            id = "same-id",
+            isResolved = true
+        )
+
+        val task2 = Task(
+            Description = "Same task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Same Task",
+            id = "same-id",
+            isResolved = true
+        )
+
+        val task3 = Task(
+            Description = "Same task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Same Task",
+            id = "same-id",
+            isResolved = false
+        )
+
+        assertEquals(task1, task2)
+        assertNotEquals(task1, task3)
+    }
+
+    @Test
+    fun `task copy preserves isResolved field`() {
+        val originalTask = Task(
+            Description = "Original task",
+            DueDate = "2025-09-15",
+            Priority = 0,
+            TargetDate = "2025-09-15",
+            Title = "Original Task",
+            id = "original-1",
+            isResolved = true
+        )
+
+        val copiedTask = originalTask.copy(Title = "Updated Task")
+
+        assertEquals("Updated Task", copiedTask.Title)
+        assertTrue(copiedTask.isResolved) // Should preserve isResolved
+        assertEquals(originalTask.Description, copiedTask.Description)
+        assertEquals(originalTask.DueDate, copiedTask.DueDate)
+        assertEquals(originalTask.Priority, copiedTask.Priority)
+        assertEquals(originalTask.TargetDate, copiedTask.TargetDate)
+        assertEquals(originalTask.id, copiedTask.id)
     }
 }
