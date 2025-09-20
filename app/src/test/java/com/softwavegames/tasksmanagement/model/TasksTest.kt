@@ -3,11 +3,11 @@ package com.softwavegames.tasksmanagement.model
 import org.junit.Test
 import org.junit.Assert.*
 
-class TasksTest {
+class TasksResponseTest {
 
     @Test
     fun `tasks creation with empty list should work correctly`() {
-        val tasks = Tasks(tasks = emptyList())
+        val tasks = TasksResponse(tasks = emptyList())
 
         assertNotNull(tasks.tasks)
         assertTrue(tasks.tasks.isEmpty())
@@ -33,7 +33,7 @@ class TasksTest {
             id = "task-2"
         )
 
-        val tasks = Tasks(tasks = listOf(task1, task2))
+        val tasks = TasksResponse(tasks = listOf(task1, task2))
 
         assertEquals(2, tasks.tasks.size)
         assertEquals(task1, tasks.tasks[0])
@@ -51,9 +51,9 @@ class TasksTest {
             id = "test-1"
         )
 
-        val tasks1 = Tasks(tasks = listOf(task1))
-        val tasks2 = Tasks(tasks = listOf(task1))
-        val tasks3 = Tasks(tasks = emptyList())
+        val tasks1 = TasksResponse(tasks = listOf(task1))
+        val tasks2 = TasksResponse(tasks = listOf(task1))
+        val tasks3 = TasksResponse(tasks = emptyList())
 
         assertEquals(tasks1, tasks2)
         assertNotEquals(tasks1, tasks3)
@@ -80,8 +80,8 @@ class TasksTest {
             id = "task-2"
         )
 
-        val tasks1 = Tasks(tasks = listOf(task1, task2))
-        val tasks2 = Tasks(tasks = listOf(task2, task1))
+        val tasks1 = TasksResponse(tasks = listOf(task1, task2))
+        val tasks2 = TasksResponse(tasks = listOf(task2, task1))
 
         assertNotEquals(tasks1, tasks2)
     }

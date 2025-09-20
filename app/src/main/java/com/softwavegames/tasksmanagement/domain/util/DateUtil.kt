@@ -6,7 +6,9 @@ import java.util.Locale
 
 object DateUtil {
 
-    fun calculateDaysLeft(dueDate: String): Int {
+    fun calculateDaysLeft(dueDate: String?): Int {
+        if (dueDate == null) return 0
+        
         return try {
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val due = dateFormat.parse(dueDate)
@@ -19,7 +21,9 @@ object DateUtil {
         }
     }
 
-    fun formatDate(dateString: String): String {
+    fun formatDate(dateString: String?): String {
+        if (dateString == null) return "No date"
+        
         return try {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("MMM dd yyyy", Locale.getDefault())

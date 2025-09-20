@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.softwavegames.tasksmanagement.R
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProBold
-import com.softwavegames.tasksmanagement.ui.theme.Beige
 import com.softwavegames.tasksmanagement.ui.theme.TasksManagementTheme
 import com.softwavegames.tasksmanagement.ui.theme.Yellow
 
@@ -32,7 +32,7 @@ fun EmptyScreen(
     ) {
         Image(
             painter = painterResource(id = R.drawable.empty_screen),
-            contentDescription = "Empty state illustration",
+            contentDescription = stringResource(R.string.empty_state_illustration),
             modifier = Modifier
                 .padding(bottom = 39.dp)
         )
@@ -41,7 +41,7 @@ fun EmptyScreen(
             text = message,
             fontSize = 28.sp,
             fontFamily = AmsiProBold,
-            color = Beige
+            color = Color.White
         )
     }
 }
