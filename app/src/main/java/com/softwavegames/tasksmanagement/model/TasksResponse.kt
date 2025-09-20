@@ -1,5 +1,5 @@
 package com.softwavegames.tasksmanagement.model
 
-data class Tasks(
+data class TasksResponse(
     val tasks: List<Task>
 )

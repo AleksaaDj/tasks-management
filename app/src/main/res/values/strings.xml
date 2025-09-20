@@ -6,4 +6,10 @@
     <string name="unresolved">Unresolved</string>
     <string name="no_tasks_for_today">No tasks for today!</string>
     <string name="intro_illustration">Intro illustration</string>
+    <string name="today">Today</string>
+    <string name="retry">Retry</string>
+    <string name="app_logo">App logo</string>
+    <string name="empty_state_illustration">Empty state illustration</string>
+    <string name="previous_day">Previous day</string>
+    <string name="next_day">Next day</string>
 </resources>

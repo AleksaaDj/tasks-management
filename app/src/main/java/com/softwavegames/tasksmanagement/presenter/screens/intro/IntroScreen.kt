@@ -35,7 +35,7 @@ fun IntroScreen(
 
             Image(
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = "App logo",
+                contentDescription = stringResource(R.string.app_logo),
                 modifier = Modifier
                     .size(220.dp)
                     .weight(1f),

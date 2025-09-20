@@ -1,6 +1,7 @@
 package com.softwavegames.tasksmanagement.di
 
 import com.softwavegames.tasksmanagement.data.TasksRepository
+import com.softwavegames.tasksmanagement.data.local.TaskDao
 import com.softwavegames.tasksmanagement.data.remote.TasksApi
 import dagger.Module
 import dagger.Provides
@@ -41,6 +42,7 @@ object AppModule {
     @Provides
     fun providesRepository(
         tasksApiService: TasksApi,
+        taskDao: TaskDao
     ) =
-        TasksRepository(tasksApiService)
+        TasksRepository(tasksApiService, taskDao)
 }

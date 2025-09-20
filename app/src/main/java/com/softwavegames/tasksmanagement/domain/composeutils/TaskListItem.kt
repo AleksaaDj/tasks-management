@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,13 +32,11 @@ fun TaskListItem(
     
     Card(
         modifier = modifier
-            .width(298.dp)
-            .heightIn(min = 80.dp)
-            .background(
-                color = Beige,
-                shape = RoundedCornerShape(5.dp)
-            ),
-        shape = RoundedCornerShape(5.dp)
+            .fillMaxWidth()
+            .widthIn(min = 298.dp)
+            .heightIn(min = 80.dp),
+        shape = RoundedCornerShape(5.dp),
+        colors = CardDefaults.cardColors(containerColor = Beige)
     ) {
         Column(
             modifier = Modifier

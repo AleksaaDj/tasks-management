@@ -2,10 +2,12 @@ package com.softwavegames.tasksmanagement.di
 
 import com.softwavegames.tasksmanagement.data.TasksRepository
 import com.softwavegames.tasksmanagement.data.remote.TasksApi
+import com.softwavegames.tasksmanagement.data.local.TaskDao
 import org.junit.Test
 import org.junit.Assert.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import io.mockk.mockk
 
 class AppModuleTest {
 
@@ -45,9 +47,10 @@ class AppModuleTest {
 
     @Test
     fun `tasks repository should be created with tasks api`() {
-        val mockTasksApi = object : TasksApi {}
+        val mockTasksApi = mockk<TasksApi>()
+        val mockTaskDao = mockk<TaskDao>()
 
-        val repository = TasksRepository(mockTasksApi)
+        val repository = TasksRepository(mockTasksApi, mockTaskDao)
 
         assertNotNull(repository)
     }
