@@ -1,5 +1,6 @@
 package com.softwavegames.tasksmanagement.domain.util
 
+import com.softwavegames.tasksmanagement.data.util.DateUtil
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -7,7 +8,7 @@ class DateUtilTest {
 
     @Test
     fun `calculateDaysLeft with future date should return positive days`() {
-        val futureDate = "2024-12-31" // Assuming current date is before this
+        val futureDate = "2024-12-31"
 
         val daysLeft = DateUtil.calculateDaysLeft(futureDate)
 

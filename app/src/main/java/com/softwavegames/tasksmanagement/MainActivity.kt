@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.softwavegames.tasksmanagement.presenter.screens.splash.SplashScreen
+import com.softwavegames.tasksmanagement.navigation.AppNavigation
 import com.softwavegames.tasksmanagement.ui.theme.TasksManagementTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TasksManagementTheme {
-                SplashScreen()
+                AppNavigation()
             }
         }
     }
@@ -27,6 +27,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainActivityPreview() {
     TasksManagementTheme {
-        SplashScreen()
+        AppNavigation()
     }
 }

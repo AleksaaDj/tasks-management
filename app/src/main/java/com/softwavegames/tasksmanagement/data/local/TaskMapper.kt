@@ -1,6 +1,7 @@
 package com.softwavegames.tasksmanagement.data.local
 
-import com.softwavegames.tasksmanagement.model.Task
+import com.softwavegames.tasksmanagement.data.model.Task
+import com.softwavegames.tasksmanagement.data.model.TaskStatus
 import java.util.UUID
 
 object TaskMapper {
@@ -14,7 +15,9 @@ object TaskMapper {
             dueDate = this.DueDate,
             targetDate = this.TargetDate,
             priority = this.Priority,
-            isResolved = this.isResolved
+            isResolved = this.isResolved,
+            status = this.status.name,
+            comment = this.comment
         )
     }
     
@@ -26,7 +29,13 @@ object TaskMapper {
             DueDate = this.dueDate,
             TargetDate = this.targetDate,
             Priority = this.priority,
-            isResolved = this.isResolved
+            isResolved = this.isResolved,
+            status = try {
+                TaskStatus.valueOf(this.status)
+            } catch (_: IllegalArgumentException) {
+                TaskStatus.UNRESOLVED
+            },
+            comment = this.comment
         )
     }
     
