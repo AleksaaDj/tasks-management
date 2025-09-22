@@ -1,5 +1,6 @@
-package com.softwavegames.tasksmanagement.model
+package com.softwavegames.tasksmanagement.ui.state
 
+import com.softwavegames.tasksmanagement.data.model.Task
 import org.junit.Assert.*
 import org.junit.Test
 import java.time.LocalDate

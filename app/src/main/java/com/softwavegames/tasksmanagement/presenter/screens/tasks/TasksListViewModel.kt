@@ -1,14 +1,14 @@
 package com.softwavegames.tasksmanagement.presenter.screens.tasks
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softwavegames.tasksmanagement.data.TasksRepository
-import com.softwavegames.tasksmanagement.model.TasksListUiState
+import com.softwavegames.tasksmanagement.ui.state.TasksListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
@@ -42,7 +42,6 @@ class TasksListViewModel @Inject constructor(
                             loadTasksForSelectedDate()
                         }
                         .onFailure { exception ->
-                            Log.d("Tasks", "initializeDatabase: ${exception.message}")
                             // Try to use any existing local data as fallback
                             try {
                                 val hasLocalData = !repository.isDatabaseEmpty()
@@ -53,28 +52,34 @@ class TasksListViewModel @Inject constructor(
                                     )
                                     loadTasksForSelectedDate()
                                 } else {
+                                    val errorMessage = when {
+                                        exception.message?.contains("Unable to resolve host") == true -> 
+                                            "No internet connection. Please check your network and try again."
+                                        exception.message?.contains("timeout") == true -> 
+                                            "Connection timeout. Please check your internet connection and try again."
+                                        else -> 
+                                            "Failed to load tasks. Please check your internet connection and try again."
+                                    }
                                     _uiState.value = _uiState.value.copy(
                                         isLoading = false,
-                                        error = "No internet connection and no local data available. Please check your connection and try again."
+                                        error = errorMessage
                                     )
                                 }
                             } catch (_: Exception) {
                                 _uiState.value = _uiState.value.copy(
                                     isLoading = false,
-                                    error = "No internet connection and no local data available. Please check your connection and try again."
+                                    error = "Failed to load tasks. Please check your internet connection and try again."
                                 )
                             }
                         }
                 } else {
-                    // Database has data, use it directly
                     _uiState.value = _uiState.value.copy(
                         isDatabaseInitialized = true,
                         isLoading = false
                     )
                     loadTasksForSelectedDate()
                 }
-            } catch (e: Exception) {
-                Log.d("Tasks", "initializeDatabase error: ${e.message}")
+            } catch (_: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     error = "Failed to load tasks. Please check your internet connection and try again."
@@ -87,11 +92,15 @@ class TasksListViewModel @Inject constructor(
         viewModelScope.launch {
             val selectedDate = _uiState.value.selectedDate
             val dateString = selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
-            
-            repository.getTasksByDate(dateString)
-                .collect { tasks ->
-                    _uiState.value = _uiState.value.copy(tasks = tasks)
-                }
+
+            try {
+                val tasks = repository.getTasksByDate(dateString).first()
+                _uiState.value = _uiState.value.copy(tasks = tasks)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(
+                    error = "Failed to load tasks: ${e.message}"
+                )
+            }
         }
     }
 
@@ -112,7 +121,7 @@ class TasksListViewModel @Inject constructor(
     fun refreshTasks() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, error = null)
-            
+
             repository.initializeDatabase()
                 .onSuccess {
                     _uiState.value = _uiState.value.copy(
@@ -122,24 +131,23 @@ class TasksListViewModel @Inject constructor(
                     loadTasksForSelectedDate()
                 }
                 .onFailure { exception ->
-                    Log.d("Tasks", "refreshTasks: ${exception.message}")
+                    val errorMessage = when {
+                        exception.message?.contains("Unable to resolve host") == true -> 
+                            "No internet connection. Please check your network and try again."
+                        exception.message?.contains("timeout") == true -> 
+                            "Connection timeout. Please check your internet connection and try again."
+                        else -> 
+                            "Failed to refresh tasks. Please check your internet connection and try again."
+                    }
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        error = "Failed to refresh tasks. Please check your internet connection and try again."
+                        error = errorMessage
                     )
                 }
         }
     }
 
-    fun updateTaskResolvedStatus(localId: String, isResolved: Boolean) {
-        viewModelScope.launch {
-            repository.updateTaskResolvedStatus(localId, isResolved)
-                .onFailure { exception ->
-                    Log.d("Tasks", "updateTaskResolvedStatus: ${exception.message}")
-                    _uiState.value = _uiState.value.copy(
-                        error = exception.message ?: "Failed to update task status"
-                    )
-                }
-        }
+    fun refreshCurrentDateTasks() {
+        loadTasksForSelectedDate()
     }
 }

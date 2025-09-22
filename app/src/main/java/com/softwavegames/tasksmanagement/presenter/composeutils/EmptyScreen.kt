@@ -1,4 +1,4 @@
-package com.softwavegames.tasksmanagement.domain.composeutils
+package com.softwavegames.tasksmanagement.presenter.composeutils
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

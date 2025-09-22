@@ -1,7 +1,7 @@
 package com.softwavegames.tasksmanagement.presenter.screens.tasks
 
 import com.softwavegames.tasksmanagement.data.TasksRepository
-import com.softwavegames.tasksmanagement.model.Task
+import com.softwavegames.tasksmanagement.data.model.Task
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.every
