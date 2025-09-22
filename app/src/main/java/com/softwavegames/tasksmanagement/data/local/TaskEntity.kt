@@ -12,5 +12,7 @@ data class TaskEntity(
     val dueDate: String?,
     val targetDate: String?,
     val priority: Int,
-    val isResolved: Boolean = false
+    val isResolved: Boolean = false,
+    val status: String = "UNRESOLVED",
+    val comment: String? = null
 )

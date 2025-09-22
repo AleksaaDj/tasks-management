@@ -5,23 +5,25 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.softwavegames.tasksmanagement.presenter.screens.intro.IntroScreen
-import com.softwavegames.tasksmanagement.presenter.screens.tasks.TasksListScreen
 import com.softwavegames.tasksmanagement.ui.theme.TasksManagementTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen() {
+fun SplashScreen(
+    onNavigateToTasks: () -> Unit = {}
+) {
     var showIntro by remember { mutableStateOf(true) }
     
     LaunchedEffect(Unit) {
         delay(2000)
         showIntro = false
+        onNavigateToTasks()
     }
     
     if (showIntro) {
         IntroScreen(modifier = Modifier.fillMaxSize())
     } else {
-        TasksListScreen()
+        // This will be handled by navigation
     }
 }
 

@@ -1,5 +1,6 @@
 package com.softwavegames.tasksmanagement.model
 
+import com.softwavegames.tasksmanagement.data.model.Task
 import org.junit.Assert.*
 import org.junit.Test
 

@@ -1,5 +1,6 @@
 package com.softwavegames.tasksmanagement.domain.util
 
+import com.softwavegames.tasksmanagement.data.util.DateUtil
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -7,17 +8,14 @@ class DateUtilEdgeCasesTest {
 
     @Test
     fun `calculateDaysLeft with leap year should work correctly`() {
-        // Test leap year date (2024 is a leap year)
         val leapYearDate = "2024-02-29"
         val daysLeft = DateUtil.calculateDaysLeft(leapYearDate)
         
-        // Should not throw exception and should return a valid number
         assertTrue(daysLeft >= 0)
     }
 
     @Test
     fun `calculateDaysLeft with year boundary should work correctly`() {
-        // Test date at year boundary
         val yearBoundaryDate = "2024-12-31"
         val daysLeft = DateUtil.calculateDaysLeft(yearBoundaryDate)
         
@@ -56,3 +54,4 @@ class DateUtilEdgeCasesTest {
         assertTrue(daysLeft >= 0)
     }
 }
+

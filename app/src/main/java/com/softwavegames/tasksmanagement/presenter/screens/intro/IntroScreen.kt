@@ -1,6 +1,5 @@
 package com.softwavegames.tasksmanagement.presenter.screens.intro
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "1ddbc03c5fd4c10b79e2590c03151b79",
+    "version": 3,
+    "identityHash": "3a623a838c041988a15c07178ae24951",
     "entities": [
       {
         "tableName": "tasks",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`localId` TEXT NOT NULL, `apiId` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `dueDate` TEXT, `targetDate` TEXT, `priority` INTEGER NOT NULL, `isResolved` INTEGER NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`localId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`localId` TEXT NOT NULL, `apiId` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `dueDate` TEXT, `targetDate` TEXT, `priority` INTEGER NOT NULL, `isResolved` INTEGER NOT NULL, `status` TEXT NOT NULL, `comment` TEXT, PRIMARY KEY(`localId`))",
         "fields": [
           {
             "fieldPath": "localId",
@@ -59,6 +59,11 @@
             "columnName": "status",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "comment",
+            "columnName": "comment",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -71,7 +76,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1ddbc03c5fd4c10b79e2590c03151b79')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3a623a838c041988a15c07178ae24951')"
     ]
   }
 }

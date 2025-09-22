@@ -1,7 +1,6 @@
 package com.softwavegames.tasksmanagement.di
 
 import android.content.Context
-import androidx.room.Room
 import com.softwavegames.tasksmanagement.data.local.TaskDao
 import com.softwavegames.tasksmanagement.data.local.TasksDatabase
 import dagger.Module
@@ -20,13 +19,7 @@ object DatabaseModule {
     fun provideTasksDatabase(
         @ApplicationContext context: Context
     ): TasksDatabase {
-        return Room.databaseBuilder(
-            context = context,
-            klass = TasksDatabase::class.java,
-            name = TasksDatabase.DB_NAME
-        )
-        .fallbackToDestructiveMigration(false)
-        .build()
+        return TasksDatabase.create(context)
     }
 
     @Provides

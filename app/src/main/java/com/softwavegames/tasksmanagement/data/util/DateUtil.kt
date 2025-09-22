@@ -1,4 +1,4 @@
-package com.softwavegames.tasksmanagement.domain.util
+package com.softwavegames.tasksmanagement.data.util
 
 import java.text.SimpleDateFormat
 import java.util.Date
