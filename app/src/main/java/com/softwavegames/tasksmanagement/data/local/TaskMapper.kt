@@ -16,7 +16,7 @@ object TaskMapper {
             targetDate = this.TargetDate,
             priority = this.Priority,
             isResolved = this.isResolved,
-            status = this.status.name,
+            status = this.status?.name ?: TaskStatus.UNRESOLVED.name,
             comment = this.comment
         )
     }
