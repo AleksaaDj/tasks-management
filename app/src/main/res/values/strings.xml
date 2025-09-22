@@ -19,8 +19,8 @@
     <string name="cant_resolve_status">Can\'t resolve</string>
     <string name="add_comment">Add Comment</string>
     <string name="comment_description">Do you want to leave a comment?</string>
-    <string name="comment_placeholder">Enter your comment here...</string>
-    <string name="cancel">Cancel</string>
-    <string name="confirm">Confirm</string>
+    <string name="comment_placeholder">Enter your comment here…</string>
+    <string name="skip">Skip</string>
+    <string name="add_comment_button">Confirm</string>
     <string name="comment">Comment</string>
 </resources>

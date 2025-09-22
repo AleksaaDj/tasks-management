@@ -9,6 +9,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,9 +24,7 @@ import com.softwavegames.tasksmanagement.data.model.TaskStatus
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProBold
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProRegular
 import com.softwavegames.tasksmanagement.ui.theme.Beige
-import com.softwavegames.tasksmanagement.ui.theme.Red
 import com.softwavegames.tasksmanagement.ui.theme.TasksManagementTheme
-import com.softwavegames.tasksmanagement.data.util.DateUtil
 
 @Composable
 fun TaskListItem(
@@ -33,7 +32,12 @@ fun TaskListItem(
     task: Task,
     onClick: () -> Unit = {},
 ) {
-    val daysLeft = DateUtil.calculateDaysLeft(task.DueDate)
+    val colors = TaskColorHelper.rememberTaskListItemColors()
+    val dateInfo = TaskColorHelper.rememberTaskDateInfo(task)
+    
+    val isResolvedOrCantResolve = remember(task.status) {
+        task.status == TaskStatus.RESOLVED || task.status == TaskStatus.CANT_RESOLVE
+    }
 
     Card(
         modifier = modifier
@@ -56,9 +60,9 @@ fun TaskListItem(
                     text = task.Title,
                     fontSize = 15.sp,
                     fontFamily = AmsiProBold,
-                    color = Red,
+                    color = colors.titleColor,
                     modifier = Modifier.padding(
-                        end = if (task.status == TaskStatus.RESOLVED || task.status == TaskStatus.CANT_RESOLVE) 34.dp else 0.dp
+                        end = if (isResolvedOrCantResolve) 34.dp else 0.dp
                     )
                 )
 
@@ -88,10 +92,10 @@ fun TaskListItem(
                         )
 
                         Text(
-                            text = DateUtil.formatDate(task.DueDate),
+                            text = dateInfo.formattedDate,
                             fontSize = 15.sp,
                             fontFamily = AmsiProBold,
-                            color = Red
+                            color = colors.dateColor
                         )
                     }
 
@@ -108,16 +112,16 @@ fun TaskListItem(
                         )
 
                         Text(
-                            text = daysLeft.toString(),
+                            text = dateInfo.daysLeft.toString(),
                             fontSize = 15.sp,
                             fontFamily = AmsiProBold,
-                            color = Red
+                            color = colors.daysLeftColor
                         )
                     }
                 }
             }
             
-            if (task.status == TaskStatus.RESOLVED || task.status == TaskStatus.CANT_RESOLVE) {
+            if (isResolvedOrCantResolve) {
                 Image(
                     painter = painterResource(
                         id = if (task.status == TaskStatus.RESOLVED) {

@@ -28,25 +28,16 @@ import com.softwavegames.tasksmanagement.R
 import com.softwavegames.tasksmanagement.data.model.Task
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProBold
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProRegular
-import com.softwavegames.tasksmanagement.ui.theme.Green
-import com.softwavegames.tasksmanagement.ui.theme.Red
 import com.softwavegames.tasksmanagement.ui.theme.TasksManagementTheme
-import com.softwavegames.tasksmanagement.ui.theme.YellowDark
-import com.softwavegames.tasksmanagement.data.util.DateUtil
 
 @Composable
 fun TaskDetailsItem(
     task: Task,
     modifier: Modifier = Modifier
 ) {
-    val daysLeft = DateUtil.calculateDaysLeft(task.DueDate)
-
-    val titleColor = if (task.isResolved) Green else Red
-    val dateColor = if (task.isResolved) Green else Red
-    val daysLeftColor = if (task.isResolved) Green else Red
-    val statusColor = if (task.isResolved) Green else YellowDark
-    val statusText =
-        if (task.isResolved) stringResource(R.string.resolved) else stringResource(R.string.unresolved)
+    val colors = TaskColorHelper.rememberTaskColors(task)
+    val dateInfo = TaskColorHelper.rememberTaskDateInfo(task)
+    val statusText = TaskColorHelper.rememberTaskStatusText(task)
 
     Box(
         modifier = modifier
@@ -78,7 +69,7 @@ fun TaskDetailsItem(
                     text = task.Title,
                     fontSize = 24.sp,
                     fontFamily = AmsiProBold,
-                    color = titleColor
+                    color = colors.titleColor
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -108,10 +99,10 @@ fun TaskDetailsItem(
                         )
 
                         Text(
-                            text = DateUtil.formatDate(task.DueDate),
+                            text = dateInfo.formattedDate,
                             fontSize = 17.sp,
                             fontFamily = AmsiProBold,
-                            color = dateColor
+                            color = colors.dateColor
                         )
                     }
 
@@ -127,10 +118,10 @@ fun TaskDetailsItem(
                         )
 
                         Text(
-                            text = daysLeft.toString(),
+                            text = dateInfo.daysLeft.toString(),
                             fontSize = 17.sp,
                             fontFamily = AmsiProBold,
-                            color = daysLeftColor
+                            color = colors.daysLeftColor
                         )
                     }
                 }
@@ -169,7 +160,7 @@ fun TaskDetailsItem(
                     text = statusText,
                     fontSize = 17.sp,
                     fontFamily = AmsiProBold,
-                    color = statusColor
+                    color = colors.statusColor
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))

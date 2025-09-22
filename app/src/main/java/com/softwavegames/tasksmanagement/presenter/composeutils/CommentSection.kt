@@ -10,6 +10,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -28,7 +29,11 @@ fun CommentSection(
     task: Task,
     modifier: Modifier = Modifier
 ) {
-    if (!task.comment.isNullOrBlank()) {
+    val hasComment = remember(task.comment) {
+        !task.comment.isNullOrBlank()
+    }
+    
+    if (hasComment) {
         Card(
             modifier = modifier
                 .fillMaxWidth()
@@ -52,7 +57,7 @@ fun CommentSection(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = task.comment,
+                    text = task.comment ?: "",
                     fontSize = 14.sp,
                     fontFamily = AmsiProRegular,
                     color = Color(0xFF444444),
