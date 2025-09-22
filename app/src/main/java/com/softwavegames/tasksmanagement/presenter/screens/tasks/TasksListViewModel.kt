@@ -20,7 +20,7 @@ class TasksListViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(TasksListUiState())
     val uiState: StateFlow<TasksListUiState> = _uiState.asStateFlow()
-
+    
     init {
         initializeDatabase()
     }
@@ -31,6 +31,7 @@ class TasksListViewModel @Inject constructor(
 
             try {
                 val isEmpty = repository.isDatabaseEmpty()
+                
                 if (isEmpty) {
                     // Only fetch from API if database is empty
                     repository.initializeDatabase()
@@ -45,6 +46,7 @@ class TasksListViewModel @Inject constructor(
                             // Try to use any existing local data as fallback
                             try {
                                 val hasLocalData = !repository.isDatabaseEmpty()
+                                
                                 if (hasLocalData) {
                                     _uiState.value = _uiState.value.copy(
                                         isDatabaseInitialized = true,

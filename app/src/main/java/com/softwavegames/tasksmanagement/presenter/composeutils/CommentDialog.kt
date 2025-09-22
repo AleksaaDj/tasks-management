@@ -127,7 +127,7 @@ fun CommentDialog(
                             shape = RoundedCornerShape(8.dp)
                         ) {
                             Text(
-                                text = stringResource(R.string.cancel),
+                                text = stringResource(R.string.skip),
                                 fontFamily = AmsiProBold,
                                 fontSize = 14.sp,
                                 color = Color.Black
@@ -152,7 +152,7 @@ fun CommentDialog(
                             enabled = comment.isNotBlank()
                         ) {
                             Text(
-                                text = stringResource(R.string.confirm),
+                                text = stringResource(R.string.add_comment_button),
                                 fontFamily = AmsiProBold,
                                 fontSize = 14.sp,
                                 color = Color.White
