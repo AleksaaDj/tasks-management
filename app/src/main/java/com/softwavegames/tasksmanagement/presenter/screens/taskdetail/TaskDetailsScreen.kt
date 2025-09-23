@@ -140,6 +140,10 @@ private fun TaskDetailsContent(
                 }
 
                 uiState.error != null -> {
+                    val errorMessage = remember(uiState.error) {
+                        "Error: ${uiState.error}"
+                    }
+                    
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -147,7 +151,7 @@ private fun TaskDetailsContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Error: ${uiState.error}",
+                            text = errorMessage,
                             color = Color.White,
                             fontSize = 16.sp
                         )
@@ -169,7 +173,25 @@ private fun TaskDetailsContent(
                                 modifier = Modifier.padding(top = 10.dp)
                             )
 
-                            if (task.status == TaskStatus.RESOLVED || task.status == TaskStatus.CANT_RESOLVE) {
+                            val isResolvedOrCantResolve = remember(task.status) {
+                                task.status == TaskStatus.RESOLVED || task.status == TaskStatus.CANT_RESOLVE
+                            }
+                            
+                            val statusIconRes = remember(task.status) {
+                                if (task.status == TaskStatus.RESOLVED) {
+                                    R.drawable.sign_resolved
+                                } else {
+                                    R.drawable.unresolved_sign
+                                }
+                            }
+                            
+                            val statusContentDescription = if (task.status == TaskStatus.RESOLVED) {
+                                stringResource(R.string.resolved)
+                            } else {
+                                stringResource(R.string.unresolved)
+                            }
+                            
+                            if (isResolvedOrCantResolve) {
                                 Spacer(modifier = Modifier.height(20.dp))
 
                                 Box(
@@ -178,24 +200,18 @@ private fun TaskDetailsContent(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Image(
-                                        painter = painterResource(
-                                            id = if (task.status == TaskStatus.RESOLVED) {
-                                                R.drawable.sign_resolved
-                                            } else {
-                                                R.drawable.unresolved_sign
-                                            }
-                                        ),
-                                        contentDescription = if (task.status == TaskStatus.RESOLVED) {
-                                            stringResource(R.string.resolved)
-                                        } else {
-                                            stringResource(R.string.unresolved)
-                                        },
+                                        painter = painterResource(id = statusIconRes),
+                                        contentDescription = statusContentDescription,
                                         modifier = Modifier.size(120.dp)
                                     )
                                 }
                             }
 
-                            if (task.status == TaskStatus.UNRESOLVED) {
+                            val isUnresolved = remember(task.status) {
+                                task.status == TaskStatus.UNRESOLVED
+                            }
+                            
+                            if (isUnresolved) {
                                 Spacer(modifier = Modifier.height(20.dp))
 
                                 Row(
