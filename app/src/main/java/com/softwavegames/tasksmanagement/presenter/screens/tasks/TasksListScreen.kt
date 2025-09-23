@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +40,7 @@ import com.softwavegames.tasksmanagement.presenter.composeutils.EmptyScreen
 import com.softwavegames.tasksmanagement.presenter.composeutils.TaskListItem
 import com.softwavegames.tasksmanagement.data.model.Task
 import com.softwavegames.tasksmanagement.data.model.TaskStatus
+import com.softwavegames.tasksmanagement.ui.events.TasksListEvent
 import com.softwavegames.tasksmanagement.ui.state.TasksListUiState
 import com.softwavegames.tasksmanagement.ui.theme.AmsiProBold
 import com.softwavegames.tasksmanagement.ui.theme.Beige
@@ -49,7 +51,7 @@ import java.time.LocalDate
 
 @Composable
 fun TasksListScreen(
-    onNavigateToTaskDetails: (String) -> Unit = {},
+    onNavigateToTaskDetails: (String) -> Unit,
     viewModel: TasksListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -62,9 +64,7 @@ fun TasksListScreen(
     TasksListContent(
         uiState = uiState,
         onNavigateToTaskDetails = onNavigateToTaskDetails,
-        onPreviousDay = { viewModel.goToPreviousDay() },
-        onNextDay = { viewModel.goToNextDay() },
-        onRefreshTasks = { viewModel.refreshTasks() }
+        onEvent = viewModel::onEvent
     )
 }
 
@@ -72,9 +72,7 @@ fun TasksListScreen(
 private fun TasksListContent(
     uiState: TasksListUiState,
     onNavigateToTaskDetails: (String) -> Unit,
-    onPreviousDay: () -> Unit,
-    onNextDay: () -> Unit,
-    onRefreshTasks: () -> Unit
+    onEvent: (TasksListEvent) -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -96,7 +94,7 @@ private fun TasksListContent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    onClick = onPreviousDay
+                    onClick = { onEvent(TasksListEvent.PreviousDayClicked) }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_left),
@@ -106,12 +104,20 @@ private fun TasksListContent(
                     )
                 }
 
-                Text(
-                    text = if (uiState.selectedDate == LocalDate.now()) {
-                        stringResource(R.string.today)
-                    } else {
+                val isToday = remember(uiState.selectedDate) {
+                    uiState.selectedDate == LocalDate.now()
+                }
+                
+                val dateText = if (isToday) {
+                    stringResource(R.string.today)
+                } else {
+                    remember(uiState.selectedDate) {
                         uiState.selectedDate.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy"))
-                    },
+                    }
+                }
+                
+                Text(
+                    text = dateText,
                     fontSize = 24.sp,
                     fontFamily = AmsiProBold,
                     color = Color.White,
@@ -119,7 +125,7 @@ private fun TasksListContent(
                 )
 
                 IconButton(
-                    onClick = onNextDay
+                    onClick = { onEvent(TasksListEvent.NextDayClicked) }
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_arrow_right),
@@ -149,6 +155,10 @@ private fun TasksListContent(
                 }
 
                 uiState.error != null -> {
+                    val errorMessage = remember(uiState.error) {
+                        "Error: ${uiState.error}"
+                    }
+                    
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -159,13 +169,13 @@ private fun TasksListContent(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                text = "Error: ${uiState.error}",
+                                text = errorMessage,
                                 color = Color.White,
                                 fontSize = 16.sp
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             Button(
-                                onClick = onRefreshTasks,
+                                onClick = { onEvent(TasksListEvent.RetryInitialization) },
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = Beige
                                 )
@@ -190,6 +200,7 @@ private fun TasksListContent(
                 }
 
                 else -> {
+                    val tasks = remember(uiState.tasks) { uiState.tasks }
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -198,7 +209,10 @@ private fun TasksListContent(
                         verticalArrangement = Arrangement.spacedBy(10.dp),
                         contentPadding = PaddingValues(bottom = 26.dp)
                     ) {
-                        items(uiState.tasks) { task ->
+                        items(
+                            items = tasks,
+                            key = { task -> task.id }
+                        ) { task ->
                             TaskListItem(
                                 task = task,
                                 onClick = { onNavigateToTaskDetails(task.id) }
@@ -236,9 +250,7 @@ fun TasksListScreenWithTasksPreview() {
                 error = null
             ),
             onNavigateToTaskDetails = {},
-            onPreviousDay = {},
-            onNextDay = {},
-            onRefreshTasks = {}
+            onEvent = {}
         )
     }
 }
@@ -257,9 +269,7 @@ fun TasksListScreenErrorPreview() {
                 error = "No internet connection. Please check your network and try again."
             ),
             onNavigateToTaskDetails = {},
-            onPreviousDay = {},
-            onNextDay = {},
-            onRefreshTasks = {}
+            onEvent = {}
         )
     }
 }
@@ -277,9 +287,7 @@ fun TasksListScreenEmptyPreview() {
                 error = null
             ),
             onNavigateToTaskDetails = {},
-            onPreviousDay = {},
-            onNextDay = {},
-            onRefreshTasks = {}
+            onEvent = {}
         )
     }
 }
