@@ -1,5 +1,6 @@
 package com.softwavegames.tasksmanagement.data
 
+import com.softwavegames.tasksmanagement.data.local.BundledTasksDataSource
 import com.softwavegames.tasksmanagement.data.local.TaskDao
 import com.softwavegames.tasksmanagement.data.local.TaskEntity
 import com.softwavegames.tasksmanagement.data.remote.TasksApi
@@ -27,6 +28,9 @@ class TasksRepositoryTest {
     @MockK
     lateinit var mockTaskDao: TaskDao
 
+    @MockK
+    lateinit var mockBundledTasksDataSource: BundledTasksDataSource
+
     private lateinit var repository: TasksRepository
 
     private val dummyApiTasks = listOf(
@@ -51,7 +55,7 @@ class TasksRepositoryTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        repository = TasksRepository(mockTasksApi, mockTaskDao)
+        repository = TasksRepository(mockTasksApi, mockTaskDao, mockBundledTasksDataSource)
     }
 
     @Test
@@ -70,13 +74,27 @@ class TasksRepositoryTest {
     fun `initializeDatabase handles API failure during initialization`() = runTest {
         val exception = Exception("API init error")
         coEvery { mockTasksApi.getTasks() } throws exception
+        every { mockBundledTasksDataSource.load() } throws Exception("Bundled data unavailable")
 
         val result = repository.initializeDatabase()
 
         assertTrue(result.isFailure)
-        assertEquals(exception, result.exceptionOrNull())
         coVerify(exactly = 1) { mockTasksApi.getTasks() }
         coVerify(exactly = 0) { mockTaskDao.insertTasks(any()) }
+    }
+
+    @Test
+    fun `initializeDatabase falls back to bundled tasks when API fails`() = runTest {
+        coEvery { mockTasksApi.getTasks() } throws Exception("API init error")
+        every { mockBundledTasksDataSource.load() } returns TasksResponse(dummyApiTasks)
+        coEvery { mockTaskDao.insertTasks(any()) } returns Unit
+
+        val result = repository.initializeDatabase()
+
+        assertTrue(result.isSuccess)
+        coVerify(exactly = 1) { mockTasksApi.getTasks() }
+        verify(exactly = 1) { mockBundledTasksDataSource.load() }
+        coVerify(exactly = 1) { mockTaskDao.insertTasks(any()) }
     }
 
     @Suppress("UnusedFlow")

@@ -2,6 +2,7 @@ package com.softwavegames.tasksmanagement.di
 
 import com.softwavegames.tasksmanagement.data.TasksRepository
 import com.softwavegames.tasksmanagement.data.remote.TasksApi
+import com.softwavegames.tasksmanagement.data.local.BundledTasksDataSource
 import com.softwavegames.tasksmanagement.data.local.TaskDao
 import org.junit.Test
 import org.junit.Assert.*
@@ -49,8 +50,9 @@ class AppModuleTest {
     fun `tasks repository should be created with tasks api`() {
         val mockTasksApi = mockk<TasksApi>()
         val mockTaskDao = mockk<TaskDao>()
+        val mockBundledTasksDataSource = mockk<BundledTasksDataSource>()
 
-        val repository = TasksRepository(mockTasksApi, mockTaskDao)
+        val repository = TasksRepository(mockTasksApi, mockTaskDao, mockBundledTasksDataSource)
 
         assertNotNull(repository)
     }

@@ -1,0 +1,44 @@
+{
+  "tasks": [
+    {
+      "Description": "Review and update the mobile app's user interface design to improve user experience and accessibility.",
+      "DueDate": "2026-06-15",
+      "Priority": 1,
+      "TargetDate": "2026-06-14",
+      "Title": "UI/UX Design Review",
+      "id": "task-1"
+    },
+    {
+      "Description": "Prepare sprint backlog items and estimate stories with the product team.",
+      "DueDate": "2026-06-15",
+      "Priority": 2,
+      "TargetDate": "2026-06-15",
+      "Title": "Sprint Planning",
+      "id": "task-2"
+    },
+    {
+      "Description": "Write unit tests for the repository layer and verify edge cases.",
+      "DueDate": "2026-06-16",
+      "Priority": 1,
+      "TargetDate": "2026-06-15",
+      "Title": "Repository Test Coverage",
+      "id": "task-3"
+    },
+    {
+      "Description": "Document API contracts and offline caching behavior for the team wiki.",
+      "DueDate": "2026-06-14",
+      "Priority": 3,
+      "TargetDate": "2026-06-13",
+      "Title": "Technical Documentation",
+      "id": "task-4"
+    },
+    {
+      "Description": "Profile list screen scroll performance and fix any jank on low-end devices.",
+      "DueDate": "2026-06-17",
+      "Priority": 2,
+      "TargetDate": "2026-06-16",
+      "Title": "Performance Profiling",
+      "id": "task-5"
+    }
+  ]
+}
